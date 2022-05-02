@@ -8,24 +8,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose
-  .connect(
-    "mongodb+srv://Hemant:lv0JIaZKV4OwZWDh@cluster0.rp8ya.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-    }
-  )
-  .then(() => console.log("MongoDb is connected"))
-  .catch((err) => console.log(err));
+    .connect(
+        "mongodb+srv://Himanshu-Chauhan:9760293354abcde@cluster0.3lxw1.mongodb.net/HimanshuProject1", {
+            useNewUrlParser: true,
+        }
+    )
+    .then(() => console.log("MongoDb is connected"))
+    .catch((err) => console.log(err));
 
-// app.use (
-//     function (req, res, next) {
-//         console.log ("inside GLOBAL MW");
-//         next();
-//   }
-//   );
 
 app.use("/", route);
 
-app.listen(process.env.PORT || 3000, function () {
-  console.log("Express app running on port " + (process.env.PORT || 3000));
+app.listen(process.env.PORT || 3000, function() {
+    console.log("Express app running on port " + (process.env.PORT || 3000));
 });
