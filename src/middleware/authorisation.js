@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const blogModel = require("../models/blogsModel");
-const jwtdecode = require("jwt-decode")
+
 
 const authorisation2 = async function(req, res, next) {
     try {

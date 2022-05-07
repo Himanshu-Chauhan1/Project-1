@@ -6,11 +6,55 @@ const createBlog = async function(req, res) {
     try {
         let data = req.body;
         if (Object.keys(data).length != 0) {
-            let authorId = req.body.authId;
-            if (!authorId) return res.send({ msg: "authorId is required" });
-            let validationAuthorId = await authorModel.findById(authorId);
-            if (!validationAuthorId) return res.send({ msg: "enter valid authorId" });
-
+            if (!data.title) {
+                return res.status(400).send({ status: false, data: "Tittle is required" })
+            }
+            if (!data.body) {
+                return res.status(400).send({ status: false, data: "Body is required" })
+            }
+            if (!data.authId) {
+                return res.status(400).send({ status: false, data: "authorId is required" })
+            }
+            if (
+                Object.keys(data.authId).length == 0 ||
+                data.authId.length == 0
+            ) {
+                return res
+                    .status(400)
+                    .send({ status: false, data: "Enter a valid college id" });
+            }
+            let validationauthorId = await authorModel.findById(data.authId);
+            if (!validationauthorId) {
+                return res.status(400).send({
+                    status: false,
+                    message: "Author is not registered with us ",
+                });
+            }
+            if (!data.tags) {
+                return res.status(400).send({ status: false, data: "tags is required" })
+            }
+            if (
+                Object.keys(data.tags).length == 0 ||
+                data.tags.length == 0
+            ) {
+                return res
+                    .status(400)
+                    .send({ status: false, data: "Enter a valid tags" });
+            }
+            if (!data.category) {
+                return res.status(400).send({ status: false, data: "category is required" })
+            }
+            if (!data.subcategory) {
+                return res.status(400).send({ status: false, data: "subcategory is required" })
+            }
+            if (
+                Object.keys(data.subcategory).length == 0 ||
+                data.subcategory.length == 0
+            ) {
+                return res
+                    .status(400)
+                    .send({ status: false, data: "Enter a valid Subcategory" });
+            }
             let blog = req.body;
             let blogCreated = await blogModel.create(blog);
             res.status(201).send({ data: blogCreated });
@@ -45,6 +89,10 @@ const updateBlog = async function(req, res) {
     try {
         let blogId = req.params.blogId
         let content = req.body
+
+        if (!content) {
+            return res.status(404).send({ msg: "Enter some details please" })
+        }
         let blog = await blogModel.findOne({ $and: [{ _id: blogId }, { isDeleted: false }] })
         if (!blog) {
             return res.status(404).send({ msg: "sorry dear we dont have such blog in our record" })

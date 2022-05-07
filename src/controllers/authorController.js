@@ -6,6 +6,27 @@ const createAuthor = async function(req, res) {
     try {
         let data = req.body
         if (Object.keys(data).length != 0) {
+            if (!data.firstname) {
+                return res.status(400).send({ status: false, data: "FirstName is required" })
+            }
+            if (!data.lastname) {
+                return res.status(400).send({ status: false, data: "lastName is required" })
+            }
+            if (!data.title) {
+                return res.status(400).send({ status: false, data: "Tittle is required" })
+            }
+            if (!data.email) {
+                return res.status(400).send({ status: false, data: "Email is required" })
+            }
+            let isRegisteredEmail = await AuthorModel.find({ email: data.email });
+            if (isRegisteredEmail.length != 0) {
+                return res
+                    .status(400)
+                    .send({ status: false, message: "email id already registered" });
+            }
+            if (!data.password) {
+                return res.status(400).send({ status: false, data: "Password is required" })
+            }
             let author = req.body
             let authorCreated = await AuthorModel.create(author)
             res.status(200).send({ status: true, data: authorCreated })

@@ -16,12 +16,19 @@ const authorSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true,
+        trim: true,
+        lowercase: true,
         unique: true,
-    },
-    password: {
-        type: String,
-        required: true,
+        required: [true, "candidate email id is required"],
+        validate: {
+            validator: function(v) {
+                return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
+            },
+            password: {
+                type: String,
+                required: true,
+            },
+        },
     },
 }, { timestamps: true });
 
